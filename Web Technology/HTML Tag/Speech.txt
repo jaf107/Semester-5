@@ -1,0 +1,49 @@
+Asssalamualaikum everyone.
+I'm Abu Jafar Saifullah and Today I'll be giving a presentation on 3 useful HTML Tags
+
+<CHANGE>
+
+The topic includes
+    1. q Tag
+    2. select tag
+    2. option tag
+
+
+<CHANGE>
+
+
+Let's start with q tag
+
+q in an inline quotation element i.e. it helps in encitinh an enclosed text.
+this element is used for short quotations that don't require paragraph breaks.
+
+-> For long quotations, blockquote is used
+
+
+<CHANGE>
+
+For example, I took a scenario based on the characters from the famous TV Series Game of Thrones. And here Jon Snow is supposed to solve a problem. We'll get to the problem in the latter part of the presentation.
+
+So here, Jon fails to solve the problem. And Ygritte says,
+You know nothing Jon Snow.
+
+this part is cited by using the q tag.
+
+
+<CHANGE>
+
+
+The remaining two tags that I had was select and option
+
+In a form, we often come across a section where we might need to select an option from a couple of options. This type of problems are solved using select and option.
+where select representsa a control that provides a menu of options. And option element is used to define an item contained in a select.
+
+
+<CHANGE>
+
+Now back to our Jon Snow problem. So the task that Jon had to do was pretty simple. He had to select a banner for the upcoming rebellion
+
+
+
+
+
