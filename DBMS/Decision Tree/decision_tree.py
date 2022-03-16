@@ -163,7 +163,8 @@ for i in range(len(dataset[0])-1):
     str_column_to_float(dataset, i)
 
 # evaluate algorithm
-n_folds = 10
+n_folds = 9
+
 ## isolate 617
 #wine 13
 ## letter recognization 16
