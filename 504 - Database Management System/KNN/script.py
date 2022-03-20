@@ -9,12 +9,15 @@ print(img.size)
 # print(img.format)
 print(img.mode)
 
-for i in range(9):
-    print(pixel_values[i])
-pixel_values = numpy.array(pixel_values).reshape((width, height, channels))
+for i in range(width):
+    for j in range(3):
+        # print(i, j)
+        print(i, j, pixel_values[i][j])
+    # print('\n')
+# pixel_values = numpy.array(pixel_values).reshape((width, height, channels))
 
 print("AFTER ORGANIZING")
-
-for i in range(3):
-    print(pixel_values[i])
+#
+# for i in range(3):
+#     print(pixel_values[i])
 # print(pixel_values)
