@@ -50,7 +50,7 @@ def evaluate_algorithm(dataset, algorithm, n_folds):
         train_set = sum(train_set, [])
         test_set = list(fold)
         predicted = algorithm(train_set, test_set)
-        actual = [row[feature_int_dx] for row in fold]
+        actual = [row[feature_intdx] for row in fold]
         accuracy = accuracy_metric(actual, predicted)
         scores.append(accuracy)
     return scores
@@ -71,47 +71,48 @@ def test_split(index, value, dataset):
 def gini_index(groups, classes):
     # count all samples at split point
     n_instances = float(sum([len(group) for group in groups]))
+    # sum weighted Gini index for each group
     gini = 0.0
     for group in groups:
         size = float(len(group))
+        # avoid divide by zero
         if size == 0:
             continue
         score = 0.0
+        # score the group based on the score for each class
         for class_val in classes:
-            p = [row[feature_int_dx] for row in group].count(class_val) / size
+            p = [row[feature_intdx] for row in group].count(class_val) / size
             score += p * p
+        # weight the group score by its relative size
         gini += (1.0 - score) * (size / n_instances)
     return gini
 
 # Select the best split point for a dataset
 
 def get_split(dataset):
-    class_values = list(set(row[feature_int_dx] for row in dataset))
+    class_values = list(set(row[feature_intdx] for row in dataset))
     b_index, b_value, b_score, b_groups = 9999999, 9999999, 9999999, None
     for index in range(len(dataset[0])):
-        if index == feature_int_dx:
+        if index == feature_intdx:
             continue
         for row in dataset:
             groups = test_split(index, row[index], dataset)
             gini = gini_index(groups, class_values)
             if gini < b_score:
                 b_index, b_value, b_score, b_groups = index, row[index], gini, groups
-    return {
-        'index': b_index, 
-        'value': b_value,
-        'groups': b_groups
-    }
+    return {'index': b_index, 'value': b_value, 'groups': b_groups}
 
 # Create a terminal node value
 
 def to_terminal(group):
-    return group[0][feature_int_dx]
+    return group[0][feature_intdx]
 
 # Create child splits for a node or make terminal
 
 def split(node):
     left, right = node['groups']
     del(node['groups'])
+    # check for a no split
     if not left or not right:
         node['left'] = node['right'] = to_terminal(left + right)
         return
@@ -127,7 +128,6 @@ def split(node):
 def build_tree(train):
     root = get_split(train)
     split(root)
-    # show_tree(root)
     return root
 
 # Make a prediction with a decision tree
@@ -148,62 +148,28 @@ def predict(node, row):
 
 def decision_tree(train, test):
     tree = build_tree(train)
-    print_tree(tree, 0)
     predictions = list()
     for row in test:
         prediction = predict(tree, row)
         predictions.append(prediction)
     return(predictions)
 
+seed(1)
 # load and prepare data
-
 filename = 'wine.csv'
 dataset = load_csv(filename)
-
-#Show tree
-def show_tree(root):
-    left, right = root['groups']
-    
-    if left:
-        show_tree(left)
-
-    print(root['value'])
-
-    if right:
-        show_tree(right)
-
-def print_tree(node, depth):
-    if not isinstance(node['right'], dict):
-        for _ in range(depth+8):
-            print(' ', end='')
-        print('class:%s' % node['right'])
-        return
-
-    depth += 8
-    if isinstance(node['left'], dict):
-        print_tree(node['left'], depth)
-
-    for _ in range(depth):
-        print(' ', end='')
-    print('ind = %2.0f' % node['index'], end=',')
-    print('val = %2.3f' % node['value'], end=',')
-    # print('num = %2.0f' % node['num'])
-
-    if isinstance(node['right'], dict):
-        print_tree(node['right'], depth)
-
 # convert string attributes to integers
-
 for i in range(len(dataset[0])-1):
     str_column_to_float(dataset, i)
 
 # evaluate algorithm
-
-n_folds = 9
-feature_int_dx = 13
+n_folds = 10
+## isolate 617
+#wine 13
+## letter recognization 16
+#ionsphier 34
+## parkinsons 21
+feature_intdx = 13
 scores = evaluate_algorithm(dataset, decision_tree, n_folds)
 print('Scores: %s' % scores)
 print('Mean Accuracy: %.3f%%' % (sum(scores)/float(len(scores))))
-
-# root  = build_tree(dataset)
-# show_tree(root)
